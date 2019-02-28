@@ -1,24 +1,23 @@
-const unified = require('unified')
-const remark = require('remark')
-const stringify = require('remark-stringify')
-const visit = require('unist-util-visit')
-const html = require('remark-html')
-const START_CODE = ':'
-function attechment() {
+const defaultOptions = {
+  className: 'remark-container',
+}
+
+function plugin(opt = {}) {
+  const { className } = Object.assign(defaultOptions, opt)
   const parser = this.Parser
   const { blockTokenizers, blockMethods, interruptParagraph } = parser.prototype
   const paragraph = 'paragraph'
-  blockTokenizers.container = tokenizer
-  blockMethods.splice(blockMethods.indexOf('newline') + 1, 0, 'container')
-  interruptParagraph.unshift(['container'])
+
   function tokenizer(eat, value, silent) {
     if (silent) {
       return true
     }
-    const reg = /^\s*:::\s*(\w+)\s*(?<title>.*?)[\n\r]([\s\S]+?)(\s*:::\s*?)/
-    let match = value.match(reg)
-    console.log(match);
-    if (!match) return
+    const reg = /^\s*:::\s*(\w+)(.*?)[\n\r]([\s\S]+?)\s*:::\s*?/
+    const match = value.match(reg)
+    if (!match) {
+      /* eslint-disable-next-line */
+      return
+    }
     const [input, type, title, content] = match
     const start = eat.now()
     const add = eat(input)
@@ -29,53 +28,30 @@ function attechment() {
         children: [
           {
             type: 'text',
-            value: (title || type).trim().toUpperCase()
-          }
+            value: (title || type).trim().toUpperCase(),
+          },
         ],
-        data: { hProperties: { className: ['remark-container-title'] } }
+        data: { hProperties: { className: [`${className}-title`] } },
       },
-      ...this.tokenizeBlock(content.trim(), {})
+      ...this.tokenizeBlock(content.trim(), {}),
     ]
     return add({
       type: 'container',
       children,
       data: {
         hName: 'div',
-        hProperties: { className: ['remark-container', type.toLowerCase()] }
+        hProperties: { className: [className, type.toLowerCase()] },
       },
       position: {
         start,
-        end
-      }
+        end,
+      },
     })
   }
   tokenizer.notInList = true
   tokenizer.notInLink = true
+  blockTokenizers.container = tokenizer
+  blockMethods.splice(blockMethods.indexOf('newline') + 1, 0, 'container')
+  interruptParagraph.unshift(['container'])
 }
-
-function transform() {
-  return tree => {
-    visit(tree, 'container', node => {})
-    visit(tree, 'paragraph', node => {})
-  }
-}
-
-function parse(md) {
-  return remark()
-    .use([attechment, transform])
-    .use(html)
-    .processSync(md).contents
-}
-
-const d = parse(`
-::: tips STOP fdsa f     
-this is content     
-this is content line 2   
-:::
-
-::: WARING     
-this is content  123
-this is content line 432   
-:::
-ddd`)
-console.log(d)
+module.exports = plugin

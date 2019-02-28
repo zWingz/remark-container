@@ -1,0 +1,11 @@
+{
+  "extends": "airbnb-base",
+  "root": true,
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "semi": [2, "never"],
+    "import/no-extraneous-dependencies": false
+  }
+}

@@ -1,13 +1,40 @@
 {
   "name": "remark-container",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
+  "keywords": [
+    "remark",
+    "remark-plugin",
+    "markdown-container",
+    "markdown"
+  ],
+  "author": "zhengzhirong <zhengzwing@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zWingz/remark-container"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.1.0",
     "remark": "^10.0.1",
     "remark-html": "^9.0.0",
     "remark-parse": "^6.0.3",
-    "unified": "^7.1.0",
     "unist-util-visit": "^1.4.0"
+  },
+  "dependencies": {},
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "index.js",
+      "!**/node_modules/**"
+    ]
   }
 }
