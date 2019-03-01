@@ -18,11 +18,15 @@ function plugin(opt = {}) {
       /* eslint-disable-next-line */
       return
     }
-    const [input, type, title, content] = match
+    // const [input, type, title, content] = match
+    const input = match[0]
+    const type = match[1]
+    const title = match[2]
+    const content = match[3]
     const start = eat.now()
     const add = eat(input)
     const end = eat.now()
-    const children = [
+    let children = [
       {
         type: paragraph,
         children: [
@@ -33,8 +37,8 @@ function plugin(opt = {}) {
         ],
         data: { hProperties: { className: [`${className}-title`] } },
       },
-      ...this.tokenizeBlock(content.trim(), {}),
     ]
+    children = children.concat(this.tokenizeBlock(content.trim(), {}))
     return add({
       type: 'container',
       children,

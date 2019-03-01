@@ -2,6 +2,9 @@
   "name": "remark-container",
   "version": "0.0.1",
   "main": "index.js",
+  "browser": {
+    "index.js": "./dist/index.umd.js"
+  },
   "keywords": [
     "remark",
     "remark-plugin",
@@ -12,13 +15,17 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "lint": "eslint index.js"
+    "lint": "eslint index.js",
+    "prebuild": "yarn test",
+    "build": "bili --format umd --module-name remarkContainer index.js",
+    "prepublish": "yarn build"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zWingz/remark-container"
   },
   "devDependencies": {
+    "bili": "^4.4.0",
     "cheerio": "^1.0.0-rc.2",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
