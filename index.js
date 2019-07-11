@@ -9,14 +9,15 @@ function plugin(opt = {}) {
   const paragraph = 'paragraph'
 
   function tokenizer(eat, value, silent) {
-    if (silent) {
-      return true
-    }
     const reg = /^\s*:::\s*(\w+)(.*?)[\n\r]([\s\S]+?)\s*:::\s*?/
     const match = value.match(reg)
     if (!match) {
       /* eslint-disable-next-line */
-      return
+      return false
+    }
+    /* istanbul ignore if - never used (yet) */
+    if (silent) {
+      return true
     }
     // const [input, type, title, content] = match
     const input = match[0]

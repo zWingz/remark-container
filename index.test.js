@@ -53,6 +53,7 @@ this is content
   it('test multi render', () => {
     const str = `
 this is a paragraph
+
 ::: Warning
 this is a warning content
 :::
@@ -81,6 +82,7 @@ this is a error content
     const str = `
   ::: fdsa custom title
 this is line1
+
 this is line2
   :::
     `
@@ -106,4 +108,17 @@ this is line2
     const container = $(`.${className}`)
     expect(container).toHaveLength(1)
   })
+})
+
+it('test multi-line link', () => {
+  const str = `
+[Link on
+two lines](https://example.com)
+`
+
+  const $ = getHTML(str)
+  const container = $('a')
+
+  expect(container).toHaveLength(1)
+  expect(container.text().replace(/[\r\n]/, ' ')).toEqual('Link on two lines')
 })
