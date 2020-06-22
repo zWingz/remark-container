@@ -33,7 +33,7 @@ function plugin(opt = {}) {
         children: [
           {
             type: 'text',
-            value: (title || type).trim().toUpperCase(),
+            value: (title || type).trim(),
           },
         ],
         data: { hProperties: { className: [`${className}-title`] } },
