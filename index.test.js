@@ -19,7 +19,7 @@ function testContainer(cheerioIns, { type, title, content }) {
       .find('p')
       .eq(0)
       .text(),
-  ).toEqual(title.toUpperCase())
+  ).toEqual(title)
   let c = content
   if (!Array.isArray(content)) {
     c = [content]
@@ -46,7 +46,7 @@ this is content
     expect(container.hasClass('tip')).toBeTruthy()
     testContainer(container, {
       type: 'tip',
-      title: 'TIP',
+      title: 'tip',
       content: 'this is content',
     })
   })
@@ -69,7 +69,7 @@ this is a error content
     const sec = container.eq(1)
     testContainer(first, {
       type: 'warning',
-      title: 'warning',
+      title: 'Warning',
       content: 'this is a warning content',
     })
     testContainer(sec, {
